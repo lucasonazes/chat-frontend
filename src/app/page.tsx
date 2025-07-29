@@ -23,7 +23,6 @@ export default function Home() {
 
   useEffect(() => {
     const fetchContactsAndMe = async () => {
-
       const headers = { Authorization: `Bearer ${token}` };
 
       const userRes = await api.get(API_URL + '/users', { headers });
@@ -41,20 +40,21 @@ export default function Home() {
     setSocket(s);
     s.connect();
 
+    s.emit('join', loggedUser?.id);
+
     const handleMessage = (message: IMessage) => {
       if (selectedContact && (message.senderId === selectedContact.id || message.receiverId === selectedContact.id)) {
         setMessages((prev) => [...prev, message]);
       }
     };
 
-    s.off('receive_message', handleMessage);
-    s.on('receive_message', handleMessage);
+    s.on('receiveMessage', handleMessage);
 
     return () => {
-      s.off('receive_message', handleMessage);
+      s.off('receiveMessage', handleMessage);
       s.disconnect();
     };
-  }, [selectedContact]);
+  }, [loggedUser, selectedContact]);
 
   useEffect(() => {
     if (!loggedUser || !selectedContact || !token) return;
@@ -75,21 +75,12 @@ export default function Home() {
   const sendMessage = async () => {
     if (!newMessage.trim() || !selectedContact) return;
 
-    const { data } = await api.post(
-      `${API_URL}/messages`,
-      {
-        content: newMessage,
-        receiverId: selectedContact.id
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
-    );
+    socket?.emit('sendMessage', {
+      content: newMessage,
+      receiverId: selectedContact.id,
+      senderId: loggedUser?.id
+    });
 
-    socket?.emit('send_message', data);
-    setMessages((prev) => [...prev, data]);
     setNewMessage('');
   };
 

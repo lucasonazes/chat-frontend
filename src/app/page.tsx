@@ -16,14 +16,14 @@ export default function Home() {
   const [newMessage, setNewMessage] = useState('');
   const [socket, setSocket] = useState<Socket | null>(null);
   const [users, setUsers] = useState<IUser[]>([]);
-  const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
+  const [selectedContact, setSelectedContact] = useState<IUser | null>(null);
   const [loggedUser, setLoggedUser] = useState<IUser | null>(null);
 
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
   const router = useRouter();
 
   useEffect(() => {
-    const fetchUsersAndMe = async () => {
+    const fetchContactsAndMe = async () => {
       if (!token) {
         toast.error('Not authenticated');
         router.push('/login');
@@ -38,7 +38,7 @@ export default function Home() {
       setLoggedUser(meRes.data);
     };
 
-    fetchUsersAndMe();
+    fetchContactsAndMe();
   }, [token, router]);
 
   useEffect(() => {
@@ -47,24 +47,27 @@ export default function Home() {
     s.connect();
 
     const handleMessage = (message: IMessage) => {
-      if (selectedUser && (message.senderId === selectedUser.id || message.receiverId === selectedUser.id)) {
+      if (selectedContact && (message.senderId === selectedContact.id || message.receiverId === selectedContact.id)) {
         setMessages((prev) => [...prev, message]);
       }
     };
 
+    s.off('receive_message', handleMessage);
     s.on('receive_message', handleMessage);
 
     return () => {
       s.off('receive_message', handleMessage);
       s.disconnect();
     };
-  }, [selectedUser]);
+  }, [selectedContact]);
 
   useEffect(() => {
-    const fetchMessages = async () => {
-      if (!loggedUser || !selectedUser || !token) return;
+    if (!loggedUser || !selectedContact || !token) return;
 
-      const res = await axios.get(`${API_URL}/messages/${loggedUser.id}/${selectedUser.id}`, {
+    setMessages([]);
+
+    const fetchMessages = async () => {
+      const res = await axios.get(`${API_URL}/messages/${loggedUser.id}/${selectedContact.id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -72,16 +75,16 @@ export default function Home() {
     };
 
     fetchMessages();
-  }, [loggedUser, selectedUser, token]);
+  }, [loggedUser, selectedContact, token]);
 
   const sendMessage = async () => {
-    if (!newMessage.trim() || !selectedUser) return;
+    if (!newMessage.trim() || !selectedContact) return;
 
     const { data } = await axios.post(
       `${API_URL}/messages`,
       {
         content: newMessage,
-        receiverId: selectedUser.id
+        receiverId: selectedContact.id
       },
       {
         headers: {
@@ -107,8 +110,8 @@ export default function Home() {
             .map((user) => (
               <button
                 key={user.id}
-                className={`px-2 py-1 rounded border ${selectedUser?.id === user.id ? 'bg-blue-600 text-white' : 'hover:bg-gray-100'}`}
-                onClick={() => setSelectedUser(user)}
+                className={`px-2 py-1 rounded border ${selectedContact?.id === user.id ? 'bg-blue-600 text-white' : 'hover:bg-gray-100'}`}
+                onClick={() => setSelectedContact(user)}
               >
                 {user.name}
               </button>
@@ -117,14 +120,14 @@ export default function Home() {
         </div>
       </section>
 
-      {selectedUser && (
+      {selectedContact && (
         <h2 className="text-md font-medium mb-2">
-          Conversando com <span className="text-blue-600">{selectedUser.name}</span>
+          Conversando com <span className="text-blue-600">{selectedContact.name}</span>
         </h2>
       )}
 
       <div className="border p-2 rounded h-64 overflow-y-auto bg-gray-50 mb-4">
-        {selectedUser ? (
+        {selectedContact ? (
           messages.length > 0 ? (
             messages.map((msg, idx) => (
               <div key={idx} className={`mb-2 flex ${msg.senderId === loggedUser?.id ? 'justify-end' : 'justify-start'}`}>
@@ -145,7 +148,7 @@ export default function Home() {
         )}
       </div>
 
-      {selectedUser && (
+      {selectedContact && (
         <div className="flex gap-2">
           <input type="text" className="flex-1 border p-2 rounded" value={newMessage} onChange={(e) => setNewMessage(e.target.value)} />
           <button onClick={sendMessage} className="bg-blue-600 text-white px-4 py-2 rounded" disabled={!newMessage.trim()}>

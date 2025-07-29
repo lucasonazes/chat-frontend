@@ -5,8 +5,7 @@ import { Socket } from 'socket.io-client';
 import { getSocket } from '@/lib/socket';
 import { IMessage } from '@/types/message';
 import { IUser } from '@/types/user';
-import axios from 'axios';
-import { toast } from 'react-hot-toast';
+import api from '@/lib/api';
 import { useRouter } from 'next/navigation';
 
 const API_URL = process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:3001';
@@ -24,17 +23,13 @@ export default function Home() {
 
   useEffect(() => {
     const fetchContactsAndMe = async () => {
-      if (!token) {
-        toast.error('Not authenticated');
-        router.push('/login');
-      }
 
       const headers = { Authorization: `Bearer ${token}` };
 
-      const userRes = await axios.get(API_URL + '/users', { headers });
+      const userRes = await api.get(API_URL + '/users', { headers });
       setUsers(userRes.data);
 
-      const meRes = await axios.get(API_URL + '/users/me', { headers });
+      const meRes = await api.get(API_URL + '/users/me', { headers });
       setLoggedUser(meRes.data);
     };
 
@@ -67,7 +62,7 @@ export default function Home() {
     setMessages([]);
 
     const fetchMessages = async () => {
-      const res = await axios.get(`${API_URL}/messages/${loggedUser.id}/${selectedContact.id}`, {
+      const res = await api.get(`${API_URL}/messages/${loggedUser.id}/${selectedContact.id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -80,7 +75,7 @@ export default function Home() {
   const sendMessage = async () => {
     if (!newMessage.trim() || !selectedContact) return;
 
-    const { data } = await axios.post(
+    const { data } = await api.post(
       `${API_URL}/messages`,
       {
         content: newMessage,

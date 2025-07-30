@@ -78,7 +78,6 @@ export default function Home() {
     socket?.emit('sendMessage', {
       content: newMessage,
       receiverId: selectedContact.id,
-      senderId: loggedUser?.id
     });
 
     setNewMessage('');

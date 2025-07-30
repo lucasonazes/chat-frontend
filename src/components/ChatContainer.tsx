@@ -8,6 +8,7 @@ import { messageService } from '@/services/messageService';
 import { useSocket } from '@/hooks/useSocket';
 import ChatWindow from '@/components/ChatWindow';
 import UserList from '@/components/UserList';
+import Loading from './Loading';
 
 export default function ChatContainer() {
   const [messages, setMessages] = useState<IMessage[]>([]);
@@ -15,6 +16,9 @@ export default function ChatContainer() {
   const [selectedContact, setSelectedContact] = useState<IUser | null>(null);
   const [loggedUser, setLoggedUser] = useState<IUser | null>(null);
   const [token, setToken] = useState<string | null>(null);
+
+  const [isLoadingUsers, setIsLoadingUsers] = useState(true);
+  const [isLoadingMessages, setIsLoadingMessages] = useState(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -24,11 +28,16 @@ export default function ChatContainer() {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const userRes = await userService.getAll();
-      setUsers(userRes.data);
+      try {
+        setIsLoadingUsers(true);
+        const userRes = await userService.getAll();
+        setUsers(userRes.data);
 
-      const meRes = await userService.getMe();
-      setLoggedUser(meRes.data);
+        const meRes = await userService.getMe();
+        setLoggedUser(meRes.data);
+      } finally {
+        setIsLoadingUsers(false);
+      }
     };
 
     fetchUsers();
@@ -48,10 +57,15 @@ export default function ChatContainer() {
   useEffect(() => {
     if (!loggedUser || !selectedContact) return;
     setMessages([]);
+    setIsLoadingMessages(true);
 
     const fetchMessages = async () => {
-      const res = await messageService.getConversation(loggedUser.id, selectedContact.id);
-      setMessages(res.data);
+      try {
+        const res = await messageService.getConversation(loggedUser.id, selectedContact.id);
+        setMessages(res.data);
+      } finally {
+        setIsLoadingMessages(false);
+      }
     };
 
     fetchMessages();
@@ -65,8 +79,18 @@ export default function ChatContainer() {
   return (
     <main className="p-4 max-w-md mx-auto">
       <h1 className="text-2xl font-bold mb-4">Chat</h1>
-      <UserList users={users} loggedUser={loggedUser} selectedContact={selectedContact} onSelect={setSelectedContact} />
-      {selectedContact && <ChatWindow messages={messages} loggedUser={loggedUser} selectedContact={selectedContact} onSend={sendMessage} />}
+      {isLoadingUsers ? (
+        <Loading />
+      ) : (
+        <UserList users={users} loggedUser={loggedUser} selectedContact={selectedContact} onSelect={setSelectedContact} />
+      )}
+
+      {selectedContact &&
+        (isLoadingMessages ? (
+          <Loading />
+        ) : (
+          <ChatWindow messages={messages} loggedUser={loggedUser} selectedContact={selectedContact} onSend={sendMessage} />
+        ))}
     </main>
   );
 }

@@ -1,32 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
-import { toast } from 'react-hot-toast';
+import { useLogin } from '@/hooks/useLogin';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const router = useRouter();
-  const URL = process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:3001';
-
-  const handleLogin = async () => {
-    try {
-      const res = await axios.post(`${URL}/users/login`, {
-        email,
-        password
-      });
-
-      const token = res.data.token;
-      localStorage.setItem('token', token);
-
-      toast.success('Welcome!');
-      router.push('/');
-    } catch {
-      toast.error('Login failed');
-    }
-  };
+  const { login } = useLogin();
 
   return (
     <main className="p-4 max-w-md mx-auto">
@@ -40,7 +20,7 @@ export default function LoginPage() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button onClick={handleLogin} className="bg-blue-600 text-white px-4 py-2 rounded">
+        <button onClick={() => login(email, password)} className="bg-blue-600 text-white px-4 py-2 rounded">
           Login
         </button>
       </div>

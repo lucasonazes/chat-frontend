@@ -1,16 +1,25 @@
 import { useState } from 'react';
-import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
+import Picker from '@emoji-mart/react';
+import data from '@emoji-mart/data';
 
 interface InputProps {
   onSend: (msg: string) => void;
 }
 
+type EmojiClickData = {
+  id: string;
+  name: string;
+  native: string;
+  unified: string;
+  keywords: string[];
+};
+
 export default function ChatInput({ onSend }: InputProps) {
   const [message, setMessage] = useState('');
   const [showPicker, setShowPicker] = useState(false);
 
-  const onEmojiClick = (emojiData: EmojiClickData) => {
-    setMessage((prev) => prev + emojiData.emoji);
+  const onEmojiClick = (emoji: EmojiClickData ) => {
+    setMessage((prev) => prev + emoji.native);
   };
 
   const sendMessage = () => {
@@ -27,7 +36,7 @@ export default function ChatInput({ onSend }: InputProps) {
 
       {showPicker && (
         <div className="absolute bottom-12 left-0 z-10">
-          <EmojiPicker onEmojiClick={onEmojiClick} />
+          <Picker data={data} onEmojiSelect={onEmojiClick} />
         </div>
       )}
 

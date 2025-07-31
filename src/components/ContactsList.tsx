@@ -7,23 +7,23 @@ interface Props {
   onSelect: (user: IUser) => void;
 }
 
-export default function UserList({ users, loggedUser, selectedContact, onSelect }: Props) {
+export default function ContactsList({ users, loggedUser, selectedContact, onSelect }: Props) {
   return (
-    <section className="mb-4">
-      <h2 className="text-lg font-semibold mb-2">Usuários:</h2>
-      <div className="flex flex-wrap gap-2">
+    <section className="w-full md:w-2/4 lg:w-1/3">
+      <h2 className="text-lg font-semibold mb-2">Contacts:</h2>
+      <div className="flex flex-col flex-wrap gap-2">
         {users
           .filter((u) => u.id !== loggedUser?.id)
           .map((user) => (
             <button
               key={user.id}
-              className={`px-2 py-1 rounded border ${selectedContact?.id === user.id ? 'bg-blue-600 text-white' : 'hover:bg-gray-100'}`}
+              className={`px-2 py-2 rounded border ${selectedContact?.id === user.id ? 'bg-primary text-white' : 'hover:bg-gray-100'}`}
               onClick={() => onSelect(user)}
             >
               {user.name}
             </button>
           ))}
-        {users.length === 0 && <p className="text-gray-500">Nenhum usuário encontrado</p>}
+        {users.length === 0 && <p className="text-gray-500">No users found</p>}
       </div>
     </section>
   );

@@ -42,8 +42,8 @@ export default function ChatInput({ onSend }: InputProps) {
 
       <input type="text" className="flex-1 border p-2 rounded" value={message} onChange={(e) => setMessage(e.target.value)} />
 
-      <button onClick={sendMessage} className="bg-blue-600 text-white px-4 py-2 rounded">
-        Enviar
+      <button onClick={sendMessage} className="bg-primary text-white px-4 py-2 rounded">
+        Send
       </button>
     </div>
   );

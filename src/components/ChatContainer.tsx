@@ -7,7 +7,7 @@ import { userService } from '@/services/userService';
 import { messageService } from '@/services/messageService';
 import { useSocket } from '@/hooks/useSocket';
 import ChatWindow from '@/components/ChatWindow';
-import UserList from '@/components/UserList';
+import UserList from '@/components/ContactsList';
 import Loading from './Loading';
 
 export default function ChatContainer() {
@@ -77,20 +77,22 @@ export default function ChatContainer() {
   };
 
   return (
-    <main className="p-4 max-w-md mx-auto">
+    <main className="p-8 w-full">
       <h1 className="text-2xl font-bold mb-4">Chat</h1>
-      {isLoadingUsers ? (
-        <Loading />
-      ) : (
-        <UserList users={users} loggedUser={loggedUser} selectedContact={selectedContact} onSelect={setSelectedContact} />
-      )}
-
-      {selectedContact &&
-        (isLoadingMessages ? (
+      <div className='flex flex-col md:flex-row gap-4'>
+        {isLoadingUsers ? (
           <Loading />
         ) : (
-          <ChatWindow messages={messages} loggedUser={loggedUser} selectedContact={selectedContact} onSend={sendMessage} />
-        ))}
+          <UserList users={users} loggedUser={loggedUser} selectedContact={selectedContact} onSelect={setSelectedContact} />
+        )}
+
+        {selectedContact &&
+          (isLoadingMessages ? (
+            <Loading />
+          ) : (
+            <ChatWindow messages={messages} loggedUser={loggedUser} selectedContact={selectedContact} onSend={sendMessage} />
+          ))}
+      </div>
     </main>
   );
 }

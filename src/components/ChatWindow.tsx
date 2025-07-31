@@ -12,20 +12,20 @@ interface Props {
 
 export default function ChatWindow({ messages, loggedUser, selectedContact, onSend }: Props) {
   return (
-    <>
+    <div className='w-full md:w-2/4 lg:w-2/3 flex flex-col h-[80vh] max-h-screen'>
       <h2 className="text-md font-medium mb-2">
-        Conversando com <span className="text-blue-600">{selectedContact.name}</span>
+        Talking with <span className="text-primary font-bold">{selectedContact.name}</span>
       </h2>
 
-      <div className="border p-2 rounded h-64 overflow-y-auto bg-gray-50 mb-4">
+      <div className="border p-2 rounded h-full overflow-y-auto bg-gray-50 mb-4">
         {messages.length > 0 ? (
           messages.map((msg, idx) => <MessageBubble key={idx} msg={msg} isMine={msg.senderId === loggedUser?.id} />)
         ) : (
-          <p className="text-gray-500">Nenhuma mensagem ainda</p>
+          <p className="text-gray-500">No messages found</p>
         )}
       </div>
 
       <ChatInput onSend={onSend} />
-    </>
+    </div>
   );
 }

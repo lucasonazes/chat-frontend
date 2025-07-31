@@ -1,7 +1,7 @@
 import { IMessage } from '@/types/message';
 import { IUser } from '@/types/user';
-import { useState } from 'react';
 import MessageBubble from './MessageBubble';
+import ChatInput from './ChatInput';
 
 interface Props {
   messages: IMessage[];
@@ -11,13 +11,6 @@ interface Props {
 }
 
 export default function ChatWindow({ messages, loggedUser, selectedContact, onSend }: Props) {
-  const [newMessage, setNewMessage] = useState('');
-
-  const handleSend = () => {
-    onSend(newMessage);
-    setNewMessage('');
-  };
-
   return (
     <>
       <h2 className="text-md font-medium mb-2">
@@ -32,12 +25,7 @@ export default function ChatWindow({ messages, loggedUser, selectedContact, onSe
         )}
       </div>
 
-      <div className="flex gap-2">
-        <input type="text" className="flex-1 border p-2 rounded" value={newMessage} onChange={(e) => setNewMessage(e.target.value)} />
-        <button onClick={handleSend} className="bg-blue-600 text-white px-4 py-2 rounded" disabled={!newMessage.trim()}>
-          Enviar
-        </button>
-      </div>
+      <ChatInput onSend={onSend} />
     </>
   );
 }

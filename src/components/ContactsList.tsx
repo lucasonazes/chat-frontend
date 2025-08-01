@@ -17,7 +17,7 @@ export default function ContactsList({ users, loggedUser, selectedContact, onSel
           .map((user) => (
             <button
               key={user.id}
-              className={`px-2 py-2 rounded border ${selectedContact?.id === user.id ? 'bg-primary text-white' : 'hover:bg-gray-100'}`}
+              className={`px-2 py-2 rounded-xl border cursor-pointer ${selectedContact?.id === user.id ? 'bg-selected text-white' : 'hover:bg-selected hover:text-white'}`}
               onClick={() => onSelect(user)}
             >
               {user.name}

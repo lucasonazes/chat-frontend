@@ -5,6 +5,8 @@
   --foreground: #1b263b;
   --primary: #25d366;
   --secondary: #075e54;
+  --selected: #2E2F2F;
+  --hover: #f0f0f0;
 }
 
 @theme {
@@ -12,6 +14,8 @@
   --color-foreground: var(--foreground);
   --color-primary: var(--primary);
   --color-secondary: var(--secondary);
+  --color-selected: var(--selected);
+  --color-hover: var(--hover);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -22,6 +26,7 @@
     --foreground: #e0e1dd;
     --primary: #25d366;
     --secondary: #075e54;
+    --selected: #303131;
   }
 }
 

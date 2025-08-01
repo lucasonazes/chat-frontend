@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Picker from '@emoji-mart/react';
 import data from '@emoji-mart/data';
+import { IoSend } from 'react-icons/io5';
 
 interface InputProps {
   onSend: (msg: string) => void;
@@ -30,7 +31,7 @@ export default function ChatInput({ onSend }: InputProps) {
 
   return (
     <div className="flex items-center gap-2 relative">
-      <button type="button" onClick={() => setShowPicker((prev) => !prev)} className="text-2xl">
+      <button type="button" onClick={() => setShowPicker((prev) => !prev)} className="text-2xl hover:bg-selected cursor-pointer rounded-3xl p-1">
         😀
       </button>
 
@@ -40,10 +41,10 @@ export default function ChatInput({ onSend }: InputProps) {
         </div>
       )}
 
-      <input type="text" className="flex-1 border p-2 rounded" value={message} onChange={(e) => setMessage(e.target.value)} />
+      <input type="text" className="flex-1 border p-2 rounded-2xl" value={message} onChange={(e) => setMessage(e.target.value)} />
 
-      <button onClick={sendMessage} className="bg-primary text-white px-4 py-2 rounded">
-        Send
+      <button onClick={sendMessage} className="bg-primary text-white px-3 py-3 rounded-3xl text-xl cursor-pointer">
+        <IoSend />
       </button>
     </div>
   );

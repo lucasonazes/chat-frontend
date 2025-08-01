@@ -7,7 +7,7 @@ import { userService } from '@/services/userService';
 import { messageService } from '@/services/messageService';
 import { useSocket } from '@/hooks/useSocket';
 import ChatWindow from '@/components/ChatWindow';
-import UserList from '@/components/ContactsList';
+import ContactsList from '@/components/ContactsList';
 import Loading from './Loading';
 
 export default function ChatContainer() {
@@ -83,7 +83,7 @@ export default function ChatContainer() {
         {isLoadingUsers ? (
           <Loading />
         ) : (
-          <UserList users={users} loggedUser={loggedUser} selectedContact={selectedContact} onSelect={setSelectedContact} />
+          <ContactsList users={users} loggedUser={loggedUser} selectedContact={selectedContact} onSelect={setSelectedContact} />
         )}
 
         {selectedContact &&

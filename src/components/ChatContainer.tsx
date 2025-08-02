@@ -9,6 +9,9 @@ import { useSocket } from '@/hooks/useSocket';
 import ChatWindow from '@/components/ChatWindow';
 import ContactsList from '@/components/ContactsList';
 import Loading from './Loading';
+import { IoLogOut } from 'react-icons/io5';
+import { useRouter } from 'next/navigation';
+import { resetSocket } from '@/lib/socket';
 
 export default function ChatContainer() {
   const [messages, setMessages] = useState<IMessage[]>([]);
@@ -16,6 +19,7 @@ export default function ChatContainer() {
   const [selectedContact, setSelectedContact] = useState<IUser | null>(null);
   const [loggedUser, setLoggedUser] = useState<IUser | null>(null);
   const [token, setToken] = useState<string | null>(null);
+  const router = useRouter();
 
   const [isLoadingUsers, setIsLoadingUsers] = useState(true);
   const [isLoadingMessages, setIsLoadingMessages] = useState(false);
@@ -76,10 +80,21 @@ export default function ChatContainer() {
     socket?.emit('sendMessage', { content, receiverId: selectedContact.id });
   };
 
+  const handleLogout = () => {
+    resetSocket();
+    localStorage.removeItem('token');
+    router.push('/login');
+  };
+
   return (
-    <main className="p-8 w-full">
-      <h1 className="text-2xl font-bold mb-4">Chat</h1>
-      <div className='flex flex-col md:flex-row gap-4'>
+    <main className="p-2 md:p-6 max-w-full">
+      <div className="flex justify-between">
+        <h1 className="text-2xl font-bold mb-4">Chat</h1>
+        <button onClick={handleLogout} className="text-icon text-4xl cursor-pointer">
+          <IoLogOut />
+        </button>
+      </div>
+      <div className="flex flex-col md:flex-row gap-4 max-w-full">
         {isLoadingUsers ? (
           <Loading />
         ) : (

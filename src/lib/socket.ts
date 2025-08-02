@@ -1,10 +1,10 @@
 import { io, Socket } from 'socket.io-client';
 
 const URL = process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:3001';
-let socket: Socket;
+let socket: Socket | null = null;
 
 export const initSocket = (token: string): Socket => {
-  if (!socket) {
+  if (!socket || !socket.connect) {
     socket = io(URL, {
       autoConnect: true,
       auth: { token }
@@ -13,4 +13,11 @@ export const initSocket = (token: string): Socket => {
   return socket;
 };
 
-export const getSocket = (): Socket => socket;
+export const getSocket = (): Socket | null => socket;
+
+export const resetSocket = () => {
+  if (socket) {
+    socket.disconnect();
+    socket = null;
+  }
+};

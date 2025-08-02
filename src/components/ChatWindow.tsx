@@ -12,8 +12,8 @@ interface Props {
 
 export default function ChatWindow({ messages, loggedUser, selectedContact, onSend }: Props) {
   return (
-    <div className='w-full md:w-2/4 lg:w-2/3 flex flex-col h-[80vh] max-h-screen'>
-      <h2 className="text-md font-bold mb-2 tracking-wider">
+    <div className="w-full md:w-2/4 lg:w-2/3 flex flex-col h-[65vh] md:h-[80vh] max-h-screen">
+      <h2 className="text-md font-bold mb-2 tracking-wide">
         Talking with <span className="text-primary">{selectedContact.name}</span>
       </h2>
 

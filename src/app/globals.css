@@ -7,6 +7,7 @@
   --secondary: #075e54;
   --selected: #2E2F2F;
   --hover: #f0f0f0;
+  --icon: #111b21;
 }
 
 @theme {
@@ -16,6 +17,7 @@
   --color-secondary: var(--secondary);
   --color-selected: var(--selected);
   --color-hover: var(--hover);
+  --color-icon: var(--icon);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -27,6 +29,7 @@
     --primary: #25d366;
     --secondary: #075e54;
     --selected: #303131;
+    --icon: #e0e1dd;
   }
 }
 

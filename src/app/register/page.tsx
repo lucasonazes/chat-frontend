@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRegister } from '@/hooks/useRegister';
 import { toast } from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 export default function RegisterPage() {
   const [name, setName] = useState('');
@@ -10,6 +11,7 @@ export default function RegisterPage() {
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
   const { register } = useRegister();
+  const router = useRouter();
 
   const handleSubmit = () => {
     if (!name || !email || !password || !repeatPassword) {
@@ -58,6 +60,10 @@ export default function RegisterPage() {
         />
         <button onClick={handleSubmit} className="bg-primary text-white px-4 py-2 rounded-xl cursor-pointer font-bold">
           Register
+        </button>
+        <span className="text-center">or</span>
+        <button className="font-bold underline tracking-wide" onClick={() => router.push('/login')}>
+          Sign in
         </button>
       </div>
     </main>

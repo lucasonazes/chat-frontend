@@ -38,10 +38,12 @@ export default function LoginPage() {
           onChange={(e) => setPassword(e.target.value)}
         />
         <button onClick={handleSubmit} className="bg-primary text-white px-4 py-2 rounded-xl cursor-pointer font-bold">
-          Login
+          Sign in
         </button>
-        <span className='text-center'>or</span>
-        <button className='font-bold underline tracking-wide' onClick={() => router.push('/register')}>Create your account</button>
+        <span className="text-center">or</span>
+        <button className="font-bold underline tracking-wide" onClick={() => router.push('/register')}>
+          Create your account
+        </button>
       </div>
     </main>
   );

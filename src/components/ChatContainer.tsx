@@ -87,9 +87,9 @@ export default function ChatContainer() {
   };
 
   return (
-    <main className="p-2 md:p-6 max-w-full">
+    <main className="p-2 md:p-6 max-w-7xl m-auto">
       <div className="flex justify-between">
-        <h1 className="text-2xl font-bold mb-4">Chat</h1>
+        <h1 className="text-2xl font-bold mb-4">Chat de <span className='text-primary'>{loggedUser?.name}</span></h1>
         <button onClick={handleLogout} className="text-icon text-4xl cursor-pointer">
           <IoLogOut />
         </button>

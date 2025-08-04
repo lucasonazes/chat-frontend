@@ -32,6 +32,13 @@ export default function ChatInput({ onSend }: InputProps) {
     setMessage('');
   };
 
+  const handleEnter = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  };
+
   return (
     <div className="flex items-center gap-2 relative">
       <div className="flex gap-1">
@@ -42,7 +49,10 @@ export default function ChatInput({ onSend }: InputProps) {
         >
           😀
         </button>
-        <button onClick={() => setShowAttachments((prev) => !prev)} className="text-3xl hover:bg-selected cursor-pointer rounded-3xl p-1">
+        <button
+          onClick={() => setShowAttachments((prev) => !prev)}
+          className="text-3xl hover:bg-selected hover:text-white cursor-pointer rounded-3xl p-1"
+        >
           <GrFormAttachment />
         </button>
       </div>
@@ -61,7 +71,13 @@ export default function ChatInput({ onSend }: InputProps) {
         />
       )}
 
-      <input type="text" className="flex-1 border p-2 rounded-2xl" value={message} onChange={(e) => setMessage(e.target.value)} />
+      <input
+        type="text"
+        onKeyDown={handleEnter}
+        className="flex-1 border p-2 rounded-2xl"
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+      />
 
       <button onClick={sendMessage} className="bg-primary text-white px-3 py-3 rounded-3xl text-xl cursor-pointer">
         <IoSend />

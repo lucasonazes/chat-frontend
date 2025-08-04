@@ -69,7 +69,7 @@ export default function RegisterPage() {
             </button>
           </form>
           <button className="mt-7 tracking-wide" onClick={() => router.push('/login')}>
-            <span>Don&apos;t have an account?<strong>Sign in</strong></span>
+            <span>Already have an account? <strong>Sign in</strong></span>
           </button>
         </div>
         <div className="md:w-1/2">

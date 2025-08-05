@@ -1,7 +1,19 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3001'
+      },
+      {
+        protocol: 'https',
+        hostname: 'chat-frontend-one-blond.vercel.app'
+      }
+    ]
+  }
 };
 
 export default nextConfig;

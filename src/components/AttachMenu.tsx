@@ -21,14 +21,14 @@ export default function AttachMenu({ isOpen, onClose, onSelect }: Props) {
     <AnimatePresence>
       {isOpen && (
         <>
-          <div className="fixed inset-0 bg-black/30 z-9" onClick={onClose} />
+          <div className='fixed inset-0 bg-black/30 z-9' onClick={onClose} />
 
           <motion.div
             initial={{ opacity: 0, scale: 0.9, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 10 }}
             transition={{ duration: 0.2 }}
-            className="absolute bottom-12 left-0 z-10 bg-white dark:bg-[#1e1e1e] shadow-lg rounded-xl p-3 flex flex-col gap-4"
+            className='absolute bottom-12 left-0 z-10 bg-white dark:bg-[#1e1e1e] shadow-lg rounded-xl p-3 flex flex-col gap-4'
           >
             {options.map((opt) => (
               <button
@@ -37,10 +37,10 @@ export default function AttachMenu({ isOpen, onClose, onSelect }: Props) {
                   onSelect(opt.action);
                   onClose();
                 }}
-                className="flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-700 px-2 py-1 rounded-md transition"
+                className='flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-700 px-2 py-1 rounded-md transition'
               >
                 <div className={`w-10 h-10 flex items-center justify-center rounded-full text-white ${opt.color}`}>{opt.icon}</div>
-                <span className="text-sm">{opt.label}</span>
+                <span className='text-sm'>{opt.label}</span>
               </button>
             ))}
           </motion.div>

@@ -75,9 +75,26 @@ export default function ChatContainer() {
     fetchMessages();
   }, [loggedUser, selectedContact]);
 
-  const sendMessage = (content: string) => {
-    if (!selectedContact || !content.trim()) return;
-    socket?.emit('sendMessage', { content, receiverId: selectedContact.id });
+  const sendMessage = (msg: string, file?: File) => {
+    if (!selectedContact) return;
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        socket?.emit('sendMessage', {
+          receiverId: selectedContact.id,
+          file: reader.result,
+          fileName: file.name,
+          fileType: file.type
+        });
+      };
+      reader.readAsDataURL(file);
+      return;
+    }
+
+    if (msg?.trim()) {
+      socket?.emit('sendMessage', { content: msg, receiverId: selectedContact.id });
+    }
   };
 
   const handleLogout = () => {
@@ -87,14 +104,16 @@ export default function ChatContainer() {
   };
 
   return (
-    <main className="p-2 md:p-6 max-w-7xl m-auto">
-      <div className="flex justify-between">
-        <h1 className="text-2xl font-bold mb-4">Chat de <span className='text-primary'>{loggedUser?.name}</span></h1>
-        <button onClick={handleLogout} className="text-icon text-4xl cursor-pointer">
+    <main className='p-6 max-w-7xl m-auto'>
+      <div className='flex justify-between'>
+        <h1 className='text-2xl font-bold mb-4'>
+          Chat de <span className='text-primary'>{loggedUser?.name}</span>
+        </h1>
+        <button onClick={handleLogout} className='text-icon text-4xl cursor-pointer'>
           <IoLogOut />
         </button>
       </div>
-      <div className="flex flex-col md:flex-row gap-4 max-w-full">
+      <div className='flex flex-col md:flex-row gap-4 max-w-full'>
         {isLoadingUsers ? (
           <Loading />
         ) : (

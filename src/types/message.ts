@@ -4,4 +4,6 @@ export interface IMessage {
   senderId: string;
   receiverId: string;
   createdAt: string;
+  fileUrl?: string;
+  fileType?: string;
 }

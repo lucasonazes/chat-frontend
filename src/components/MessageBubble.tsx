@@ -6,7 +6,7 @@ export default function MessageBubble({ msg, isMine }: { msg: IMessage; isMine: 
   const renderContent = () => {
     if (msg.fileUrl) {
       if (msg.fileType?.startsWith('image')) {
-        return <Image src={msg.fileUrl} width={50} height={50} alt='image' className='max-w-[200px] rounded-lg cursor-pointer hover:opacity-90' />;
+        return <Image src={msg.fileUrl} width={300} height={300} alt='image' className='max-w-[200px] md:max-w-[300px] rounded-lg cursor-pointer hover:opacity-90' />;
       }
       if (msg.fileType === 'application/pdf') {
         return (

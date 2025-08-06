@@ -20,7 +20,11 @@ api.interceptors.response.use(
     const data = error.response?.data;
     const hadToken = !!localStorage.getItem('token');
 
-    if (data?.errors?.length) {
+    if (status === 401 || status === 403) {
+      if (hadToken) toast.error('Session expired');
+      localStorage.removeItem('token');
+      window.location.href = '/login';
+    } else if (data?.errors?.length) {
       toast.error(data.errors[0].message);
     } else if (data?.message) {
       toast.error(data.message);
@@ -28,11 +32,6 @@ api.interceptors.response.use(
       toast.error('Unexpected error');
     }
 
-    if (status === 401 || status === 403) {
-      if (hadToken) toast.error('Session expired');
-      localStorage.removeItem('token');
-      window.location.href = '/login';
-    }
     return Promise.reject(data || { success: false, code: 'UNKNOWN_ERROR', message: 'Unexpected error' });
   }
 );

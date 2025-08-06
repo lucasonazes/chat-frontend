@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaRegImage, FaCamera, FaFileAlt, FaUser } from 'react-icons/fa';
+import { FaRegImage, FaCamera, FaFileAlt } from 'react-icons/fa';
 
 interface Props {
   isOpen: boolean;
@@ -13,8 +13,7 @@ export default function AttachMenu({ isOpen, onClose, onSelect }: Props) {
   const options = [
     { label: 'Document', icon: <FaFileAlt />, color: 'bg-blue-500', action: 'document' },
     { label: 'Camera', icon: <FaCamera />, color: 'bg-pink-500', action: 'camera' },
-    { label: 'Galery', icon: <FaRegImage />, color: 'bg-purple-500', action: 'gallery' },
-    { label: 'Contact', icon: <FaUser />, color: 'bg-green-500', action: 'contact' }
+    { label: 'Galery', icon: <FaRegImage />, color: 'bg-purple-500', action: 'gallery' }
   ];
 
   return (

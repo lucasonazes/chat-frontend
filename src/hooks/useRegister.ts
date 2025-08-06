@@ -13,8 +13,8 @@ export const useRegister = () => {
 
       toast.success(`Account created. Welcome, ${name}!`);
       router.push('/');
-    } catch {
-      toast.error('Error creating account');
+    } catch (err) {
+      console.error('Registration error:', err);
     }
   };
 

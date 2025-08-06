@@ -52,6 +52,14 @@ export default function ChatInput({ onSend }: InputProps) {
 
   const handleAttachment = (action: string) => {
     if (action === 'gallery' || action === 'document') {
+      fileInputRef.current?.removeAttribute('capture');
+      fileInputRef.current?.setAttribute('accept', action === 'gallery' ? 'image/*' : '*/*');
+      fileInputRef.current?.click();
+    }
+
+    if (action === 'camera') {
+      fileInputRef.current?.setAttribute('accept', 'image/*');
+      fileInputRef.current?.setAttribute('capture', 'environment');
       fileInputRef.current?.click();
     }
   };
@@ -92,7 +100,14 @@ export default function ChatInput({ onSend }: InputProps) {
 
         {showAttachments && <AttachMenu isOpen={showAttachments} onClose={() => setShowAttachments(false)} onSelect={handleAttachment} />}
 
-        <input ref={fileInputRef} type='file' accept='image/*,application/pdf' className='hidden' onChange={handleFileChange}></input>
+        <input
+          ref={fileInputRef}
+          type='file'
+          accept='image/*,application/pdf'
+          capture='environment'
+          className='hidden'
+          onChange={handleFileChange}
+        ></input>
 
         <input
           type='text'

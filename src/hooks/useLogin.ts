@@ -13,8 +13,8 @@ export const useLogin = () => {
 
       toast.success('Welcome!');
       router.push('/');
-    } catch {
-      toast.error('Login failed');
+    } catch (err) {
+      console.error('Login error:', err);
     }
   };
 

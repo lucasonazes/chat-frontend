@@ -17,14 +17,23 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     const status = error.response?.status;
+    const data = error.response?.data;
     const hadToken = !!localStorage.getItem('token');
+
+    if (data?.errors?.length) {
+      toast.error(data.errors[0].message);
+    } else if (data?.message) {
+      toast.error(data.message);
+    } else {
+      toast.error('Unexpected error');
+    }
 
     if (status === 401 || status === 403) {
       if (hadToken) toast.error('Session expired');
       localStorage.removeItem('token');
       window.location.href = '/login';
     }
-    return Promise.reject(error);
+    return Promise.reject(data || { success: false, code: 'UNKNOWN_ERROR', message: 'Unexpected error' });
   }
 );
 

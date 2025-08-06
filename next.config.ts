@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'chat-frontend-one-blond.vercel.app'
+        hostname: 'chat-backend-mvvj.onrender.com'
       }
     ]
   }

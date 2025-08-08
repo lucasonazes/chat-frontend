@@ -85,4 +85,4 @@ A modern, responsive real-time chat application frontend built with Next.js, Rea
 
 ## 📝 License
 
-This project is licensed under the MIT License
+This project is licensed under the MIT License.

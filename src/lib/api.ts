@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
+import { store } from '@/store';
+import { setToken } from '@/store/authSlice';
 
 const API_URL = process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:3001';
 
@@ -8,7 +10,7 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+  const token = typeof window !== 'undefined' ? store.getState().auth.token : null;
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
@@ -18,11 +20,11 @@ api.interceptors.response.use(
   (error) => {
     const status = error.response?.status;
     const data = error.response?.data;
-    const hadToken = !!localStorage.getItem('token');
+    const hadToken = !!store.getState().auth.token;
 
     if (status === 401 || status === 403) {
       if (hadToken) toast.error('Session expired');
-      localStorage.removeItem('token');
+      store.dispatch(setToken(null));
       window.location.href = '/login';
     } else if (data?.errors?.length) {
       toast.error(data.errors[0].message);
